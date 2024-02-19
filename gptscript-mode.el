@@ -33,31 +33,33 @@
 
 (require 'rx)
 
-(defgroup gptscript-mode nil
-  "Major mode for editing GPTScript natural language."
-  :prefix "gptscript-mode-"
-  :group 'comm
-  :link '(url-link :tag "Repository" "https://github.com/emacs-openai/gptscript-mode"))
-
 (defvar gptscript-mode-syntax-table
   (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?# "<" table)
+    (modify-syntax-entry ?\n ">" table)
     table)
   "Syntax table for GPTScript file.")
 
-(defface gptscript-mode-symbol-face
+(defface gptscript-mode-builtin-face
   '((t :inherit font-lock-builtin-face))
-  "Face for highlighting symbols in GPTScript files."
+  "Face for highlighting builtins in GPTScript files."
   :group 'gptscript-mode)
+(defvar gptscript-mode-builtin-face 'gptscript-mode-builtin-face)
 
 (defconst gptscript-mode-parameters
-  '("tool" "name" "model" "modelname" "description" "internalprompt" "tools"
-    "args" "arg" "maxtoken" "maxtokens" "cache" "jsonresponse" "temperature")
+  (let ((params '("tool" "name" "model" "modelname" "description"
+                  "internalprompt" "tools" "args" "arg" "maxtoken" "maxtokens"
+                  "cache" "jsonresponse" "temperature"))
+        (cap-params))
+    (dolist (param params)
+      (push (capitalize param) cap-params))
+    (append params cap-params))
   "List of parameters name.")
 
 (defconst gptscript-mode-font-lock-keywords
-  `((,(regexp-opt gptscript-mode-parameters 'symbols)
-     . gptscript-mode-symbol-face))
-  "Keywords in GPTScript file.")
+  `((,(rx-to-string `(: line-start (zero-or-more blank) (or ,@gptscript-mode-parameters) ":"))
+     . gptscript-mode-builtin-face))
+  "Parameters in GPTScript file.")
 
 ;;;###autoload
 (define-derived-mode gptscript-mode text-mode "GPTScript"
@@ -67,6 +69,12 @@
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.gpt\\'" . gptscript-mode))
+
+;;
+;;; Company
+
+(defvar company-keywords)
+(defvar company-keywords-alist)
 
 (with-eval-after-load 'company-keywords
   (add-to-list 'company-keywords-alist
