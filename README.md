@@ -6,7 +6,10 @@
 
 [![CI](https://github.com/emacs-openai/gptscript-mode/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-openai/gptscript-mode/actions/workflows/test.yml)
 
+GPTScript is a new scripting language to automate your interaction with a
+Large Language Model (LLM).
 
+See https://github.com/gptscript-ai/gptscript for more information!
 
 ## 🛠️ Contribute
 
