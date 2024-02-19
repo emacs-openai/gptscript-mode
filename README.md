@@ -1,3 +1,4 @@
+<a href="#"><img align="right" src="https://avatars.githubusercontent.com/u/158112119?s=200&v=4"></a>
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![JCS-ELPA](https://raw.githubusercontent.com/jcs-emacs/badges/master/elpa/v/gptscript-mode.svg)](https://jcs-emacs.github.io/jcs-elpa/#/gptscript-mode)
 
