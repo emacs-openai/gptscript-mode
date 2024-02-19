@@ -31,14 +31,21 @@
 
 ;;; Code:
 
+(require 'rx)
+
 (defgroup gptscript-mode nil
   "Major mode for editing GPTScript natural language."
   :prefix "gptscript-mode-"
   :group 'comm
   :link '(url-link :tag "Repository" "https://github.com/emacs-openai/gptscript-mode"))
 
+(defvar gptscript-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    table)
+  "Syntax table for GPTScript file.")
+
 (defface gptscript-mode-symbol-face
-  '((t :inherit font-lock-constant-face))
+  '((t :inherit font-lock-builtin-face))
   "Face for highlighting symbols in GPTScript files."
   :group 'gptscript-mode)
 
@@ -48,19 +55,22 @@
   "List of parameters name.")
 
 (defconst gptscript-mode-font-lock-keywords
-  `((,(regexp-opt
-       gptscript-mode-parameters
-       'symbols)
+  `((,(regexp-opt gptscript-mode-parameters 'symbols)
      . gptscript-mode-symbol-face))
   "Keywords in GPTScript file.")
 
 ;;;###autoload
 (define-derived-mode gptscript-mode text-mode "GPTScript"
   "Major mode for editing GPTScript files."
+  :syntax-table gptscript-mode-syntax-table
   (font-lock-add-keywords 'gptscript-mode gptscript-mode-font-lock-keywords))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.gpt\\'" . gptscript-mode))
+
+(with-eval-after-load 'company-keywords
+  (add-to-list 'company-keywords-alist
+               `(gptscript-mode . ,gptscript-mode-parameters)))
 
 (provide 'gptscript-mode)
 ;;; gptscript-mode.el ends here
