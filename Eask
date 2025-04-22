@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "gptscript-mode"
          "0.0.1"
          "Major mode for editing GPTScript natural language")
